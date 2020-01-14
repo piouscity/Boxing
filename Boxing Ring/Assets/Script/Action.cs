@@ -29,6 +29,16 @@ public class ActionManager {
         }
     }
 
+    public static Queue<Action> CreateListAction(List<string> listActionName)
+    {
+        Queue<Action> temp = new Queue<Action>();
+        foreach (string name in listActionName)
+        {
+            temp.Enqueue(new Action() { name = name });
+        }
+        return temp;
+    }
+
     public static void AddAction(Action action) {
         if (actions.ContainsKey(action.name))
         {

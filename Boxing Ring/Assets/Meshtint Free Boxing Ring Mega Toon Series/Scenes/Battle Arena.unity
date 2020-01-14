@@ -135,7 +135,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 44e194398165e4d1bbb649179ae23c5e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.14
+      value: 2.9
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 44e194398165e4d1bbb649179ae23c5e,
         type: 3}
@@ -386,7 +386,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 44e194398165e4d1bbb649179ae23c5e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.281278
+      value: -2.31
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 44e194398165e4d1bbb649179ae23c5e,
         type: 3}
@@ -453,6 +453,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.5
       objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: 44e194398165e4d1bbb649179ae23c5e,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 11b96b66b798c4c5d94ccbe7c1341282, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44e194398165e4d1bbb649179ae23c5e, type: 3}
 --- !u!1 &393531851
@@ -849,8 +854,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model: {fileID: 428447581}
   player: {fileID: 1640142216}
-  isDoneListAction: 0
-  countAction: 0
 --- !u!4 &874550237
 Transform:
   m_ObjectHideFlags: 0
