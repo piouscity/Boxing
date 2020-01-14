@@ -8,68 +8,74 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     public GameObject model;
     public GameObject player;
-    public List<int> actions = new List<int>();
+    public Dictionary<int, List<string>> actionInLevel = new Dictionary<int, List<string>>();
+
+    public bool isDoneListAction;
+    public int countAction;
+
     private void Start()
     {
+        countAction = 0;
+        isDoneListAction = false;
         ActionManager.InitAction();
-        Debug.Log("Init action");
+        GamePlay.GenerateInputActions(GamePlay.level);
+        actionInLevel.Add(GamePlay.level, GamePlay.inputActions);
+    }
+
+    private void playAction(string actionName) {
+        if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            if (ActionManager.GetAction(actionName) != null) {
+                ActionManager.GetAction(actionName).Play(model);
+            }
+        }
+    }
+
+    public int RandomNumber(int min, int max)
+    {
+        System.Random random = new System.Random();
+        return random.Next(min, max);
+    }
+    public void playListAction()
+    {
+        if (actionInLevel.ContainsKey(GamePlay.level))
+        {
+            for (int i = 0; i < actionInLevel[GamePlay.level].Count; i++)
+            {
+                if (countAction < actionInLevel[GamePlay.level].Count)
+                {
+                    playAction(actionInLevel[GamePlay.level][i]);
+                    if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        // Do something
+                    }
+                    else
+                    {
+                        countAction += 1;
+                    }
+                }
+                if (i == actionInLevel[GamePlay.level].Count - 1)
+                {
+                    isDoneListAction = true;
+                    countAction = 0;
+                }
+            }
+        }
     }
     private void Update()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (!isDoneListAction)
         {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("Sit").Play(model);
-            }
+            playListAction();
         }
-        if (Input.GetKey(KeyCode.S))
+        if (GamePlay.isLevelUp)
         {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            if (GamePlay.isDoneGenerateInputAction)
             {
-                Debug.Log("Idle");
-                ActionManager.GetAction("Drink").Play(model);
-            }
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("StandUp").Play(model);
-            }
-        }
-        if (Input.GetKey(KeyCode.F))
-        {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("Walk").Play(model);
-            }
-        }
-        if (Input.GetKey(KeyCode.G))
-        {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("ArmWave").Play(model);
-            }
-        }
-        if (Input.GetKey(KeyCode.H))
-        {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("Kick").Play(model);
-            }
-        }
-        if (Input.GetKey(KeyCode.J))
-        {
-            if (model.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-            {
-                Debug.Log("Idle");
-                ActionManager.GetAction("PhoneCall").Play(model);
+                Debug.Log(GamePlay.inputActions.Count);
+                actionInLevel.Add(GamePlay.level, GamePlay.inputActions);
+                GamePlay.isLevelUp = false;
+                isDoneListAction = false;
             }
         }
     }

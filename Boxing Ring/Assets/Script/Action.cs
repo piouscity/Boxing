@@ -7,7 +7,6 @@ public class Action
     public string name;
     public void Play(GameObject gameObject) {
         Animator anim = gameObject.GetComponent<Animator>();
-        //anim.Play(name, 0, 0.25f);
         anim.SetTrigger(name);
     }
     
