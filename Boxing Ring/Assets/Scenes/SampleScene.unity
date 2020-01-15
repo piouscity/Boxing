@@ -716,7 +716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _BodySource: {fileID: 104444640}
-  databasePath: 
+  databasePath: BoxingGesture.gbd
 --- !u!4 &1018071170
 Transform:
   m_ObjectHideFlags: 0

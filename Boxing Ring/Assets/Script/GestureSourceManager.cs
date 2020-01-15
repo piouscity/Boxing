@@ -54,7 +54,9 @@ public class GestureSourceManager : MonoBehaviour
 
             // load the gestures from the gesture database
             string path = System.IO.Path.Combine(Application.streamingAssetsPath, databasePath);
+            Debug.Log(path);
             _Database = VisualGestureBuilderDatabase.Create(path);
+            Debug.Log(_Database);
 
             // Load all gestures
             IList<Gesture> gesturesList = _Database.AvailableGestures;
@@ -88,6 +90,7 @@ public class GestureSourceManager : MonoBehaviour
         if (!_Source.IsTrackingIdValid)
         {
             FindValidBody();
+            Debug.Log(_Source.TrackingId);
         }
     }
 
@@ -119,24 +122,29 @@ public class GestureSourceManager : MonoBehaviour
         VisualGestureBuilderFrameReference frameReference = e.FrameReference;
         using (VisualGestureBuilderFrame frame = frameReference.AcquireFrame())
         {
+            //Debug.Log("Frame info retrieved");
             if (frame != null)
             {
+                //Debug.Log("Frame info not null");
                 // get the discrete gesture results which arrived with the latest frame
                 IDictionary<Gesture, DiscreteGestureResult> discreteResults = frame.DiscreteGestureResults;
 
                 if (discreteResults != null)
                 {
+                    //Debug.Log("Descrete result not null");
                     foreach (Gesture gesture in _Source.Gestures)
                     {
+                        //Debug.Log("Scanning Gesture: " + gesture.Name);
                         if (gesture.GestureType == GestureType.Discrete)
                         {
+                            //Debug.Log("This gesture is discrete");
                             DiscreteGestureResult result = null;
                             discreteResults.TryGetValue(gesture, out result);
-
+                            //Debug.Log("Gesture: " + gesture.Name + " with result: " + result.Detected);
                             if (result != null)
                             {
                                 // Fire Event
-                                OnGesture(new EventArgs(gesture.Name, result.Confidence));
+                                //OnGesture(new EventArgs(gesture.Name, result.Confidence));
                                 Debug.Log("Detected Gesture " + gesture.Name + " with Confidence " + result.Confidence);
                             }
                         }
