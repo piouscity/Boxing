@@ -7,6 +7,29 @@ public class BodySourceManager : MonoBehaviour
     private KinectSensor _Sensor;
     private BodyFrameReader _Reader;
     private Body[] _Data = null;
+    private bool isMonitor = true;
+
+    public bool IsMonitor
+    {
+        get { return isMonitor; }
+        set {
+            isMonitor = value;
+            if (value)
+            {
+                if (_Reader == null)
+                    _Reader = _Sensor.BodyFrameSource.OpenReader();
+            }
+            else
+            {
+                if (_Reader != null)
+                {
+                    _Reader.Dispose();
+                    _Reader = null;
+                }
+                _Data = null;
+            }
+        }
+    }
     
     public Body[] GetData()
     {

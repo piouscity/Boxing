@@ -477,6 +477,49 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 810392895}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &817688382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 817688384}
+  - component: {fileID: 817688383}
+  m_Layer: 0
+  m_Name: KinectQueue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &817688383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817688382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6acc2143b0b6a38498865bc6c884a0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &817688384
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817688382}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5526934, y: -3.8234425, z: -0.19038963}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &849109608
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -717,6 +760,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _BodySource: {fileID: 104444640}
   databasePath: BoxingGesture.gbd
+  KinectQueue: {fileID: 0}
+  IsMonitor: 0
 --- !u!4 &1018071170
 Transform:
   m_ObjectHideFlags: 0

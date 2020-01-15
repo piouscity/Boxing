@@ -17,17 +17,28 @@ public class GestureSourceManager : MonoBehaviour
             confidence = _confidence;
         }
     }
-
     public BodySourceManager _BodySource;
     public string databasePath;
+    public double confidence = 0.4;
     private KinectSensor _Sensor;
     private VisualGestureBuilderFrameSource _Source;
     private VisualGestureBuilderFrameReader _Reader;
     private VisualGestureBuilderDatabase _Database;
-
-    // Gesture Detection Events
-    public delegate void GestureAction(EventArgs e);
-    public event GestureAction OnGesture;
+    public KinectQueue KinectQueue;
+    private bool isMonitor = false;
+    public bool IsMonitor
+    {
+        get { return isMonitor; }
+        set {
+            _BodySource.IsMonitor = value;
+            isMonitor = value;
+            if (!value)
+            {
+                _Source.TrackingId = 0;
+                _Reader.IsPaused = true;
+            }
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -87,10 +98,9 @@ public class GestureSourceManager : MonoBehaviour
     // Update Loop, set body if we need one
     void Update()
     {
-        if (!_Source.IsTrackingIdValid)
+        if (isMonitor && !_Source.IsTrackingIdValid)
         {
             FindValidBody();
-            Debug.Log(_Source.TrackingId);
         }
     }
 
@@ -122,30 +132,27 @@ public class GestureSourceManager : MonoBehaviour
         VisualGestureBuilderFrameReference frameReference = e.FrameReference;
         using (VisualGestureBuilderFrame frame = frameReference.AcquireFrame())
         {
-            //Debug.Log("Frame info retrieved");
             if (frame != null)
             {
-                //Debug.Log("Frame info not null");
                 // get the discrete gesture results which arrived with the latest frame
                 IDictionary<Gesture, DiscreteGestureResult> discreteResults = frame.DiscreteGestureResults;
 
                 if (discreteResults != null)
                 {
-                    //Debug.Log("Descrete result not null");
                     foreach (Gesture gesture in _Source.Gestures)
                     {
-                        //Debug.Log("Scanning Gesture: " + gesture.Name);
                         if (gesture.GestureType == GestureType.Discrete)
                         {
-                            //Debug.Log("This gesture is discrete");
                             DiscreteGestureResult result = null;
                             discreteResults.TryGetValue(gesture, out result);
-                            //Debug.Log("Gesture: " + gesture.Name + " with result: " + result.Detected);
                             if (result != null)
                             {
                                 // Fire Event
-                                //OnGesture(new EventArgs(gesture.Name, result.Confidence));
-                                Debug.Log("Detected Gesture " + gesture.Name + " with Confidence " + result.Confidence);
+                                //Debug.Log("Detected Gesture " + gesture.Name + " with Confidence " + result.Confidence);
+                                if (result.Detected == true && result.Confidence >= confidence)
+                                {
+                                    KinectQueue.GestureQueue.Enqueue(gesture.Name);
+                                }
                             }
                         }
                     }
