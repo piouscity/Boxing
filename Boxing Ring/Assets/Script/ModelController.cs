@@ -4,17 +4,33 @@ using UnityEngine;
 
 public class ModelController : MonoBehaviour
 {
-    public static Queue<Action> ActionQueue = new Queue<Action>();
+    public Queue<Action> ActionQueue = new Queue<Action>();
+    public bool IsRunning;
     void Start()
     {
+        IsRunning = false;
     }
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle") && ActionQueue.Count > 0)
+        Debug.Log(IsRunning);
+        if (IsRunning)
         {
-            Action a = ActionQueue.Dequeue();
-            a.Play(gameObject);
+            if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                Debug.Log(ActionQueue.Count);
+                if (ActionQueue.Count > 0)
+                {
+                    Action a = ActionQueue.Dequeue();
+                    a.Play(gameObject);
+                } else
+                {
+                    IsRunning = false;
+                }
+                
+            }
+        
         }
+        
     }
 }

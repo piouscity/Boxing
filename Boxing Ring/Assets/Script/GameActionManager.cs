@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class GameActionManager 
 {
-    public static int level = 1;
+    public static int level = 7;
     public static List<string> inputActions = new List<string>();
     public static List<string> replayActions = new List<string>();
     public static int RandomNumber(int min, int max)
@@ -72,18 +72,19 @@ public static class GameActionManager
             }
         }
     }
-    public static bool Matching(List<string> input, List<string> replay)
+    public static bool Matching(List<string> replay, List<string> input)
     {
-        int res = 1;
-        if (input.Count != replay.Count) { return false; }
-        for (int i = 0; i < input.Count; i++)
+        for (int i = 0; i + input.Count - 1 < replay.Count; ++i)
         {
-            if (input[i] != replay[i])
-            {
-                res *= 0;
-            }
+            bool ok = true;
+            for (int j = 0; j < input.Count; ++j)
+                if (replay[i] != input[j])
+                {
+                    ok = false;
+                    break;
+                }
+            if (ok) return true;
         }
-        if (res == 0) { return false; }
-        return true;
+        return false;
     }
 }
