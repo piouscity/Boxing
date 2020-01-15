@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public Dictionary<int, List<string>> actionInLevel = new Dictionary<int, List<string>>();
     private bool IsDequeued;
+    public float TimeOut;
     private float TimeSince;
     private bool isMatching;
     private bool IsModelRunning;
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
         GameActionManager.GenerateInputActions(GameActionManager.level);
         actionInLevel.Add(GameActionManager.level, GameActionManager.inputActions);
         model.GetComponent<ModelController>().ActionQueue = ActionManager.CreateListAction(actionInLevel[GameActionManager.level]);
+        TimeOut = model.GetComponent<ModelController>().ActionQueue.Count * 4;
         GestureSource.IsMonitor = false;
         IsDequeued = false;
         isMatching = false;
@@ -78,6 +80,7 @@ public class GameController : MonoBehaviour
                 GameActionManager.GenerateInputActions(GameActionManager.level);
                 actionInLevel.Add(GameActionManager.level, GameActionManager.inputActions);
                 model.GetComponent<ModelController>().ActionQueue = ActionManager.CreateListAction(actionInLevel[GameActionManager.level]);
+                TimeOut = model.GetComponent<ModelController>().ActionQueue.Count * 4;
             }
         }
 

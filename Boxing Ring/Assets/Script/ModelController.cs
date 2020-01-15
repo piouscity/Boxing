@@ -16,19 +16,18 @@ public class ModelController : MonoBehaviour
         Debug.Log(IsRunning);
         if (IsRunning)
         {
-            if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            if (GameController.instance.TimeOut > 0)
             {
                 Debug.Log(ActionQueue.Count);
                 if (ActionQueue.Count > 0)
                 {
                     Action a = ActionQueue.Dequeue();
                     a.Play(gameObject);
-                } else
-                {
-                    IsRunning = false;
                 }
-                
+                GameController.instance.TimeOut -= Time.deltaTime;
             }
+            else
+                IsRunning = false;
         
         }
         

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class GameActionManager 
 {
-    public static int level = 7;
+    public static int level = 1;
     public static List<string> inputActions = new List<string>();
     public static List<string> replayActions = new List<string>();
     public static int RandomNumber(int min, int max)
