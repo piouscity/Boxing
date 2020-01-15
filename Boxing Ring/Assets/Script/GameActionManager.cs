@@ -18,7 +18,7 @@ public static class GameActionManager
         replayActions = new List<string>();
         while (inputActions.Count < number)
         {
-            switch (RandomNumber(1, 7))
+            switch (RandomNumber(1, 5))
             {
                 case 1:
                     if (!inputActions.Contains("Drink"))
@@ -28,34 +28,20 @@ public static class GameActionManager
                     }
                     break;
                 case 2:
-                    if (!inputActions.Contains("StandUp"))
-                    {
-                        inputActions.Add("StandUp");
-                        Debug.Log("StandUp");
-                    }
-                    break;
-                case 3:
                     if (!inputActions.Contains("Kick"))
                     {
                         inputActions.Add("Kick");
                         Debug.Log("Kick");
                     }
                     break;
-                case 4:
+                case 3:
                     if (!inputActions.Contains("Sit"))
                     {
                         inputActions.Add("Sit");
                         Debug.Log("Sit");
                     }
                     break;
-                case 5:
-                    if (!inputActions.Contains("PhoneCall"))
-                    {
-                        inputActions.Add("PhoneCall");
-                        Debug.Log("PhoneCall");
-                    }
-                    break;
-                case 6:
+                case 4:
                     if (!inputActions.Contains("Walk"))
                     {
                         inputActions.Add("Walk");
@@ -74,17 +60,15 @@ public static class GameActionManager
     }
     public static bool Matching(List<string> replay, List<string> input)
     {
-        for (int i = 0; i + input.Count - 1 < replay.Count; ++i)
+        for (int i = 0; i < replay.Count; ++i)
+            Debug.Log(replay[i]);
+        if (replay.Count < input.Count)
+            return false;
+        for (int i = 0; i < input.Count; ++i)
         {
-            bool ok = true;
-            for (int j = 0; j < input.Count; ++j)
-                if (replay[i] != input[j])
-                {
-                    ok = false;
-                    break;
-                }
-            if (ok) return true;
+            if (replay[i] != input[i])
+                return false;
         }
-        return false;
+        return true;
     }
 }

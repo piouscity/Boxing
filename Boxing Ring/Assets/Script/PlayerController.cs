@@ -12,10 +12,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle") && ActionQueue.Count > 0)
-        {
-            Action a = ActionQueue.Dequeue();
-            a.Play(gameObject);
-        }
+      
     }
 }

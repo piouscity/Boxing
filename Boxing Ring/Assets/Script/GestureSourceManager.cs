@@ -17,7 +17,35 @@ public class GestureSourceManager : MonoBehaviour
             confidence = _confidence;
         }
     }
+    public GameObject Root;
+    public GameObject Hip_Center;
+    public GameObject Spine;
+    public GameObject Shoulder_Center;
+    public GameObject Head;
+    public GameObject Collar_Left;
+    public GameObject Shoulder_Left;
+    public GameObject Elbow_Left;
+    public GameObject Wrist_Left;
+    public GameObject Hand_Left;
+    public GameObject Collar_Right;
+    public GameObject Shoulder_Right;
+    public GameObject Elbow_Right;
+    public GameObject Wrist_Right;
+    public GameObject Hand_Right;
+    public GameObject Hip_Left;
+    public GameObject Thigh_Left;
+    public GameObject Knee_Left;
+    public GameObject Ankle_Left;
+    public GameObject Foot_Left;
+    public GameObject Hip_Right;
+    public GameObject Thigh_Right;
+    public GameObject Knee_Right;
+    public GameObject Ankle_Right;
+    public GameObject Foot_Right;
+    public GameObject Neck;
+
     public BodySourceManager _BodySource;
+    public GameObject Player;
     public string databasePath;
     public double confidence = 0.4;
     private KinectSensor _Sensor;
@@ -102,6 +130,7 @@ public class GestureSourceManager : MonoBehaviour
         {
             FindValidBody();
         }
+        Mapping();
     }
 
     // Check Body Manager, grab first valid body
@@ -157,6 +186,47 @@ public class GestureSourceManager : MonoBehaviour
                         }
                     }
                 }
+            }
+        }
+    }
+
+    void Mapping()
+    {
+        //GameObject tanımlanmış mı kontrolü yapılır.
+        if (_BodySource == null)
+        {
+            return;
+
+        }
+        //BodySourceManager scripti içerisindeki fonksiyon çağırılarak body değerleri alınır.
+        Windows.Kinect.Body[] data = _BodySource.GetData();
+
+        //Data değerleri başarıyla atanmışmı kontrolü yapılır.
+        if (data == null)
+        {
+            return;
+        }
+        //Takip edilebilir kaç kişi var ise onun id numarası kayıt altına alınır.
+        List<ulong> trackedIds = new List<ulong>();
+        foreach (var body in data)
+        {
+            if (body == null)
+            {
+                continue;
+            }
+            if (body.IsTracked)
+            {
+                trackedIds.Add(body.TrackingId);
+                var pos = body.Joints[JointType.Head].Position;
+                Head.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
+                pos = body.Joints[JointType.Neck].Position;
+                Neck.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
+                pos = body.Joints[JointType.ShoulderLeft].Position;
+                Shoulder_Left.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
+                pos = body.Joints[JointType.ShoulderRight].Position;
+                Shoulder_Right.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
+                pos = body.Joints[JointType.SpineBase].Position;
+                Spine.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
             }
         }
     }

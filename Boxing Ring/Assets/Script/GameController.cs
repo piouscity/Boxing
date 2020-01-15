@@ -11,8 +11,10 @@ public class GameController : MonoBehaviour
     public GameObject model;
     public GameObject player;
     public Dictionary<int, List<string>> actionInLevel = new Dictionary<int, List<string>>();
+    public GameObject TextTime;
     private bool IsDequeued;
     public float TimeOut;
+    private int numAction;
     private float TimeSince;
     private bool isMatching;
     private bool IsModelRunning;
@@ -43,16 +45,19 @@ public class GameController : MonoBehaviour
     {
         if (model.GetComponent<ModelController>().IsRunning == false)
         {
-            Debug.Log("Player Turn");
+            //Debug.Log("Player Turn");
             if (!IsDequeued)
             {
                 KinectQueue.GestureQueue.Clear();
                 GestureSource.IsMonitor = true;
                 IsDequeued = true;
-                TimeSince = 0;
+                TimeSince = GameActionManager.level * 6;
+                Debug.Log("Player Turn");
+                Debug.Log(GameActionManager.level);
             }
-            TimeSince += Time.deltaTime;
-            if (TimeSince > 10)
+            TimeSince -= Time.deltaTime;
+            TextTime.GetComponent<TextMesh>().text = TimeSince.ToString();
+            if (TimeSince <= 0)
             {
                 GestureSource.IsMonitor = false;
                 IsDequeued = false;
@@ -61,24 +66,33 @@ public class GameController : MonoBehaviour
                 if (GameActionManager.Matching(replayAction, inputAction))
                 {
                     isMatching = true;
+                    GameActionManager.level++;
+                    Debug.Log("Matched");
                 }
+                else
+                {
+                    Debug.Log("Not matched");
+                }
+                TimeOut = GameActionManager.level * 4;
                 model.GetComponent<ModelController>().IsRunning = true;
+                
                 IsModelRunning = true;
             }
         }
         else
         {
-            Debug.Log("Model Turn");
-            if (isMatching == true)
-            {
-                GameActionManager.level++;
-            }
+            //Debug.Log("Model Turn");
+            
             isMatching = false;
             if (IsModelRunning == true)
             {
+                Debug.Log("Model Turn");
                 IsModelRunning = false;
                 GameActionManager.GenerateInputActions(GameActionManager.level);
-                actionInLevel.Add(GameActionManager.level, GameActionManager.inputActions);
+                if (!actionInLevel.ContainsKey(GameActionManager.level))
+                    actionInLevel.Add(GameActionManager.level, GameActionManager.inputActions);
+                else
+                    actionInLevel[GameActionManager.level] = GameActionManager.inputActions;
                 model.GetComponent<ModelController>().ActionQueue = ActionManager.CreateListAction(actionInLevel[GameActionManager.level]);
                 TimeOut = model.GetComponent<ModelController>().ActionQueue.Count * 4;
             }

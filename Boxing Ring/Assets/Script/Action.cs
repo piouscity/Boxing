@@ -18,9 +18,9 @@ public class ActionManager {
     {
         List<Action> listAction = new List<Action>();
         listAction.Add(new Action() { name = "Drink" });
-        listAction.Add(new Action() { name = "StandUp" });
+        //listAction.Add(new Action() { name = "StandUp" });
         listAction.Add(new Action() { name = "Sit" });
-        listAction.Add(new Action() { name = "PhoneCall" });
+        //listAction.Add(new Action() { name = "PhoneCall" });
         listAction.Add(new Action() { name = "ArmWave" });
         listAction.Add(new Action() { name = "Kick" });
         listAction.Add(new Action() { name = "Walk" });

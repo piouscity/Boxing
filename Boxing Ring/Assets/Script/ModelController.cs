@@ -13,14 +13,13 @@ public class ModelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(IsRunning);
         if (IsRunning)
         {
             if (GameController.instance.TimeOut > 0)
             {
-                Debug.Log(ActionQueue.Count);
-                if (ActionQueue.Count > 0)
+                if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle") && ActionQueue.Count > 0)
                 {
+                    Debug.Log("not idle");
                     Action a = ActionQueue.Dequeue();
                     a.Play(gameObject);
                 }
