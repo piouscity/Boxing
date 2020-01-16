@@ -92,9 +92,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0.93150645
-  m_ExitTime: 0.75
+  m_TransitionDuration: 0.36497355
+  m_TransitionOffset: 0.5511481
+  m_ExitTime: 0.74683744
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -108,7 +108,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: sitting
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7568575705544388981}
@@ -139,7 +139,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2205097527413370882}
-    m_Position: {x: 140, y: 320, z: 0}
+    m_Position: {x: 140, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2759859559826985766}
     m_Position: {x: 710, y: 310, z: 0}
@@ -154,7 +154,7 @@ AnimatorStateMachine:
     m_Position: {x: 640, y: 690, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3349385591950158536}
-    m_Position: {x: 360, y: 760, z: 0}
+    m_Position: {x: 360, y: 680, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -231053960409786885}
     m_Position: {x: 50, y: 710, z: 0}
@@ -241,43 +241,43 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Kick
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: StandUp
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Sit
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: PhoneCall
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: ArmWave
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   - m_Name: Walk
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 9100000}
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -382,7 +382,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: drink
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6258084892912546995}
@@ -410,7 +410,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: walking
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 7864816420543109694}
@@ -445,7 +445,7 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 0.33354378
-  m_TransitionOffset: 0.93291014
+  m_TransitionOffset: 5.542935
   m_ExitTime: 0.91420835
   m_HasExitTime: 1
   m_HasFixedDuration: 1
@@ -467,7 +467,7 @@ AnimatorStateTransition:
   m_IsExit: 0
   serializedVersion: 3
   m_TransitionDuration: 1.1924398
-  m_TransitionOffset: 0.76350474
+  m_TransitionOffset: 3.215366
   m_ExitTime: 0.0557918
   m_HasExitTime: 1
   m_HasFixedDuration: 1
@@ -513,9 +513,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0
-  m_TransitionOffset: 0.7289165
-  m_ExitTime: 0.089793324
+  m_TransitionDuration: 0.2644397
+  m_TransitionOffset: 0.5973
+  m_ExitTime: 0.074156284
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -535,9 +535,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0.8527387
-  m_ExitTime: 0.75
+  m_TransitionDuration: 0.06310654
+  m_TransitionOffset: 0.4553988
+  m_ExitTime: 0.62552315
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -576,7 +576,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: horizontalarmwave
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 5439089876157768769}
@@ -610,9 +610,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.8101282
-  m_TransitionOffset: 0.83713067
-  m_ExitTime: 0.75
+  m_TransitionDuration: 0.38911223
+  m_TransitionOffset: 0.05301095
+  m_ExitTime: 0.89244896
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -632,9 +632,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0.94964993
-  m_ExitTime: 0.75
+  m_TransitionDuration: 0.105953574
+  m_TransitionOffset: 0.6114984
+  m_ExitTime: 0.9017239
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

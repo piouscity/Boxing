@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public GameObject player;
     public Dictionary<int, List<string>> actionInLevel = new Dictionary<int, List<string>>();
     public GameObject TextTime;
+    public GameObject TextLevel;
     private bool IsDequeued;
     public float TimeOut;
     private int numAction;
@@ -43,6 +44,7 @@ public class GameController : MonoBehaviour
     }
     private void Update()
     {
+        TextLevel.GetComponent<TextMesh>().text = "Level: " + GameActionManager.level.ToString();
         if (model.GetComponent<ModelController>().IsRunning == false)
         {
             //Debug.Log("Player Turn");
@@ -52,11 +54,12 @@ public class GameController : MonoBehaviour
                 GestureSource.IsMonitor = true;
                 IsDequeued = true;
                 TimeSince = GameActionManager.level * 6;
-                Debug.Log("Player Turn");
-                Debug.Log(GameActionManager.level);
+               /* Debug.Log("Player Turn");
+                Debug.Log(GameActionManager.level);*/
             }
             TimeSince -= Time.deltaTime;
-            TextTime.GetComponent<TextMesh>().text = TimeSince.ToString();
+            TextTime.GetComponent<TextMesh>().text = "Time: " + (TimeSince >= 0 ? Math.Floor(TimeSince).ToString() : "x");
+                
             if (TimeSince <= 0)
             {
                 GestureSource.IsMonitor = false;
@@ -67,11 +70,6 @@ public class GameController : MonoBehaviour
                 {
                     isMatching = true;
                     GameActionManager.level++;
-                    Debug.Log("Matched");
-                }
-                else
-                {
-                    Debug.Log("Not matched");
                 }
                 TimeOut = GameActionManager.level * 4;
                 model.GetComponent<ModelController>().IsRunning = true;
@@ -86,7 +84,7 @@ public class GameController : MonoBehaviour
             isMatching = false;
             if (IsModelRunning == true)
             {
-                Debug.Log("Model Turn");
+                //Debug.Log("Model Turn");
                 IsModelRunning = false;
                 GameActionManager.GenerateInputActions(GameActionManager.level);
                 if (!actionInLevel.ContainsKey(GameActionManager.level))

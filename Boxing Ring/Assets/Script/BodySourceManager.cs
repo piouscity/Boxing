@@ -14,7 +14,7 @@ public class BodySourceManager : MonoBehaviour
         get { return isMonitor; }
         set {
             isMonitor = value;
-            if (value)
+            /*if (value)
             {
                 if (_Reader == null)
                     _Reader = _Sensor.BodyFrameSource.OpenReader();
@@ -27,7 +27,7 @@ public class BodySourceManager : MonoBehaviour
                     _Reader = null;
                 }
                 _Data = null;
-            }
+            }*/
         }
     }
     

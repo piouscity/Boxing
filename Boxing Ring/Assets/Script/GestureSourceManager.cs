@@ -17,6 +17,7 @@ public class GestureSourceManager : MonoBehaviour
             confidence = _confidence;
         }
     }
+    public Material BoneMaterial;
     public GameObject Root;
     public GameObject Hip_Center;
     public GameObject Spine;
@@ -53,24 +54,62 @@ public class GestureSourceManager : MonoBehaviour
     private VisualGestureBuilderFrameReader _Reader;
     private VisualGestureBuilderDatabase _Database;
     public KinectQueue KinectQueue;
+    private Body currentBody;
+    private GameObject bodyObject;
     private bool isMonitor = false;
+
+    private Dictionary<JointType, JointType> _BoneMap = new Dictionary<JointType, JointType>()
+    {
+        { JointType.FootLeft, JointType.AnkleLeft },
+        { JointType.AnkleLeft, JointType.KneeLeft },
+        { JointType.KneeLeft, JointType.HipLeft },
+        { JointType.HipLeft, JointType.SpineBase },
+
+        { JointType.FootRight, JointType.AnkleRight },
+        { JointType.AnkleRight, JointType.KneeRight },
+        { JointType.KneeRight, JointType.HipRight },
+        { JointType.HipRight, JointType.SpineBase },
+
+        { JointType.HandTipLeft, JointType.HandLeft },
+        { JointType.ThumbLeft, JointType.HandLeft },
+        { JointType.HandLeft, JointType.WristLeft },
+        { JointType.WristLeft, JointType.ElbowLeft },
+        { JointType.ElbowLeft, JointType.ShoulderLeft },
+        { JointType.ShoulderLeft, JointType.SpineShoulder },
+
+        { JointType.HandTipRight, JointType.HandRight },
+        { JointType.ThumbRight, JointType.HandRight },
+        { JointType.HandRight, JointType.WristRight },
+        { JointType.WristRight, JointType.ElbowRight },
+        { JointType.ElbowRight, JointType.ShoulderRight },
+        { JointType.ShoulderRight, JointType.SpineShoulder },
+
+        { JointType.SpineBase, JointType.SpineMid },
+        { JointType.SpineMid, JointType.SpineShoulder },
+        { JointType.SpineShoulder, JointType.Neck },
+        { JointType.Neck, JointType.Head },
+    };
+
     public bool IsMonitor
     {
         get { return isMonitor; }
         set {
             _BodySource.IsMonitor = value;
             isMonitor = value;
-            if (!value)
+            /*if (!value)
             {
                 _Source.TrackingId = 0;
                 _Reader.IsPaused = true;
-            }
+            }*/
         }
     }
 
     // Use this for initialization
     void Start()
     {
+        bodyObject = new GameObject("body");
+        CreateBodyObject();
+
         _Sensor = KinectSensor.GetDefault();
         if (_Sensor != null)
         {
@@ -93,9 +132,9 @@ public class GestureSourceManager : MonoBehaviour
 
             // load the gestures from the gesture database
             string path = System.IO.Path.Combine(Application.streamingAssetsPath, databasePath);
-            Debug.Log(path);
+            //Debug.Log(path);
             _Database = VisualGestureBuilderDatabase.Create(path);
-            Debug.Log(_Database);
+            //Debug.Log(_Database);
 
             // Load all gestures
             IList<Gesture> gesturesList = _Database.AvailableGestures;
@@ -146,6 +185,7 @@ public class GestureSourceManager : MonoBehaviour
                 {
                     if (body.IsTracked)
                     {
+                        currentBody = body;
                         SetBody(body.TrackingId);
                         break;
                     }
@@ -153,6 +193,24 @@ public class GestureSourceManager : MonoBehaviour
             }
         }
 
+    }
+
+    private void CreateBodyObject()
+    {
+        for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
+        {
+            GameObject jointObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            LineRenderer lr = jointObj.AddComponent<LineRenderer>();
+            lr.SetVertexCount(2);
+            lr.material = BoneMaterial;
+            lr.SetWidth(0.05f, 0.05f);
+
+
+            jointObj.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+            jointObj.name = jt.ToString();
+            jointObj.transform.parent = bodyObject.transform;
+        }
     }
 
     /// Handles gesture detection results arriving from the sensor for the associated body tracking Id
@@ -192,42 +250,45 @@ public class GestureSourceManager : MonoBehaviour
 
     void Mapping()
     {
-        //GameObject tanımlanmış mı kontrolü yapılır.
-        if (_BodySource == null)
+        CreateBodyObject();
+        if (_Source.IsTrackingIdValid)
         {
-            return;
-
-        }
-        //BodySourceManager scripti içerisindeki fonksiyon çağırılarak body değerleri alınır.
-        Windows.Kinect.Body[] data = _BodySource.GetData();
-
-        //Data değerleri başarıyla atanmışmı kontrolü yapılır.
-        if (data == null)
-        {
-            return;
-        }
-        //Takip edilebilir kaç kişi var ise onun id numarası kayıt altına alınır.
-        List<ulong> trackedIds = new List<ulong>();
-        foreach (var body in data)
-        {
-            if (body == null)
+            for (JointType jt = JointType.SpineBase; jt <= JointType.ThumbRight; jt++)
             {
-                continue;
+                //Debug.Log("real " + jt.ToString());
+                var sourceJoint = currentBody.Joints[jt];
+                Windows.Kinect.Joint? targetJoint = null;
+
+                if (_BoneMap.ContainsKey(jt))
+                {
+                    //Debug.Log(jt.ToString());
+                    targetJoint = currentBody.Joints[_BoneMap[jt]];
+                }
+
+                Transform jointObj = bodyObject.transform.Find(jt.ToString());
+                jointObj.localPosition = GetVector3FromJoint(sourceJoint);
+
+                LineRenderer lr = jointObj.GetComponent<LineRenderer>();
+                if (targetJoint.HasValue)
+                {
+                    lr.SetPosition(0, jointObj.localPosition);
+                    lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
+                    lr.SetColors(Color.green, Color.black);
+                }
+                else
+                {
+                    lr.enabled = false;
+                }
             }
-            if (body.IsTracked)
-            {
-                trackedIds.Add(body.TrackingId);
-                var pos = body.Joints[JointType.Head].Position;
-                Head.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
-                pos = body.Joints[JointType.Neck].Position;
-                Neck.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
-                pos = body.Joints[JointType.ShoulderLeft].Position;
-                Shoulder_Left.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
-                pos = body.Joints[JointType.ShoulderRight].Position;
-                Shoulder_Right.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
-                pos = body.Joints[JointType.SpineBase].Position;
-                Spine.transform.position = new Vector3(pos.X, pos.Y, Player.transform.position.z);
-            }
+      
         }
+    }
+    private static Vector3 GetVector3FromJoint(Windows.Kinect.Joint joint)
+    {
+        return new Vector3(joint.Position.X * 3 - 3, joint.Position.Y * 3 + 4, joint.Position.Z * 3 - 0.6f);
+    }
+    Vector3 VectorMap(CameraSpacePoint pos)
+    {
+        return new Vector3(pos.X, pos.Y, pos.Z);
     }
 }

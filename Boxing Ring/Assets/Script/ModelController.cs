@@ -17,10 +17,12 @@ public class ModelController : MonoBehaviour
         {
             if (GameController.instance.TimeOut > 0)
             {
-                if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle") && ActionQueue.Count > 0)
+                if (gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Idle")
+                    && ActionQueue.Count > 0)
                 {
-                    Debug.Log("not idle");
+                    //Debug.Log("not idle");
                     Action a = ActionQueue.Dequeue();
+                    Debug.Log("Queue:" + a.name);
                     a.Play(gameObject);
                 }
                 GameController.instance.TimeOut -= Time.deltaTime;
