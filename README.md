@@ -10,7 +10,7 @@
 |1612853|Trung-Hieu Ho|
 
 ## Trailer
-[![](https://www.youtube.com/watch?v=UxuYRGJZKZo"")
+[![]("https://www.youtube.com/watch?v=UxuYRGJZKZo")
 
 ## Poster
 ![Poster](Poster.png)
